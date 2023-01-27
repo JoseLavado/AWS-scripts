@@ -15,10 +15,10 @@ echo -ne '... \r'
 sleep 1
 echo -ne '.... \r'
 echo -ne '\n'
-echo done.
+echo done..
 echo
 echo adding IPs to Security group...
-echo
+echo 
 
 cd /root/scripts/
 file="server1_ip_list.txt"
