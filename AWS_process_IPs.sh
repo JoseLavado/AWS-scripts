@@ -39,11 +39,13 @@ done <$file1
 # script name=erase_rules_sg.sh
 # get contents of SG and dump into a file to extract the IPs to be deleted, will leave SG empty
 
+#!/bin/bash
 groupid="sg-0eda6522984404af9"
 aws ec2 describe-security-group-rules --filter Name="group-id",Values="sg-0eda6522984404af9" > raw_ip_list.txt
-cat raw_ip_list.txt | grep "Cidr" | cut -d '"' -f 4 > ip_list.txt
+cat raw_ip_list.txt | grep "Cidr" | cut -d '"' -f 4 | grep -v 0.0.0.0 > ip_list.txt
 ip_file="ip_list.txt"
 while read -r line; do
 echo aws ec2 revoke-security-group-ingress --group-id ${groupid} --protocol tcp --port 23 --cidr ${line}
 aws ec2 revoke-security-group-ingress --group-id ${groupid} --protocol tcp --port 23 --cidr ${line}
 done <$ip_file
+
